@@ -1,0 +1,5 @@
+@props(["name", "type" => "text"])
+<div class="signup__section">
+    <label class="signup__label" for="{{ $name }}">{{ $name }}</label>
+    <textarea rows="10" class="form-control" name="{{ $name }}" ></textarea>
+</div>
