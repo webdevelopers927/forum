@@ -6,9 +6,9 @@
                     <div class="posts__users">Users</div>
                     <div class="posts__replies">Replies</div>
                 </div>
-                    <div class="posts__body">
+                    <div class="posts__body" id="topics">
                     @foreach($questions as $question)
-                        <x-post href="lol" :question="$question"/>
+                        <x-post :question="$question"/>
                     @endforeach
                  </div>
             </div>

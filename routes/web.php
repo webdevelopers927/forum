@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AjaxController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\TagController;
@@ -29,6 +30,7 @@ Route::post("/login", [LoginController::class, "create"]);
 Route::post("/question/{question:id}/comment", [QuestionController::class, "store"]);
 Route::get("/create-question", [QuestionController::class, "create"]);
 Route::post("/create-question/create", [QuestionController::class, "storeQuestion"]);
+Route::get("/search", [AjaxController::class, "search"]);
 
 Route::get("/post", function() {
 	return view("single");

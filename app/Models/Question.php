@@ -33,7 +33,7 @@ class Question extends Model
 		return $this->belongsTo(User::class);
 	}
     public function scopeFilter($query, array $filter) {
-
+		// dd($filter[1]);
 		$query->when($filter[0]["category"] ?? null, function ($query, $search) {
 			$query->whereExists(function($query) use ($search) {
     			$query->from("categories")
@@ -42,6 +42,7 @@ class Question extends Model
     		});
     	});
 		$query->when($filter[1] ?? null, function ($query, $search) {
+			// dd($search);
 			$query->whereExists(function($query) use ($search) {
     			$query->from("question_tag")
     					->whereColumn("question_tag.question_id", "questions.id")
@@ -49,8 +50,11 @@ class Question extends Model
     		});
     	});
 		$query->when($filter[0]["q"] ?? null, function ($query, $search) {
-			$query->where("title", "like", "%" . $search . "%")
+			$query->where(function ($query) use ($search) {
+				$query->where("title", "like", "%" . $search . "%")
 					->orWhere("description", "like", "%" . $search . "%");
+			}
+			);
 		});
     	// dd($query->toSql());
     	// return $query->toSql();

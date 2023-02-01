@@ -29,6 +29,8 @@
     <script src="/https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="/https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
     <![endif]-->
+    <script src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js">
+    </script>
 </head>
 <body>
     <!-- HEADER -->
@@ -56,12 +58,12 @@
                         <label>
                             <i class="icon-Search js-header-search-btn-open"></i>
                             @if(request("category"))
-                                <input type="hidden" name="category" value="{{ request("category") }}">
+                                <input type="hidden" id="category" name="category" value="{{ request("category") }}">
                             @endif
                             @if(request("tag"))
-                                <input type="hidden" name="tag" value="{{ request("tag")}}">
+                                <input type="hidden" id="tag" name="tag" value="{{ request("tag")}}">
                             @endif    
-                            <input type="search" name="q" value="{{ request("q") }}" placeholder="Search all forums" class="form-control">
+                            <input type="search" id="search" onkeyup="getResults()" name="q" value="{{ request("q") }}" placeholder="Search all forums" class="form-control">
                         </label>
                     </form>
                     <div class="header__search-close js-header-search-btn-close"><i class="icon-Cancel"></i></div>
@@ -317,6 +319,79 @@
                 })
             }
             document.getElementById("tags").value = collection.toString();
+        }
+    </script>
+    <script>
+        
+        const topicBody = document.getElementById("topics");
+        const getTags = tags => {
+            let tagsMarkup = "";
+            tags.forEach(tag => {
+                tagsMarkup += `<a href='?tag=${tag.name}' class="bg-a3d39c">${tag.name}</a>`;
+            });
+            return tagsMarkup; 
+                                        
+        }
+        const getMarkup = detail => {
+            
+            return `<div class="posts__item bg-f2f4f6">                     
+                    <div class="posts__section-left">
+                            <div class="posts__topic">
+                                <div class="posts__content">
+                                    <a href="/question/${detail.slug}">
+                                        <h3>${detail.title}</h3>
+                                    </a>
+                                    <div class="posts__tags tags">
+                                        ${getTags(detail.tags)}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="posts__category"><a href="/category/wait" class="category"><i class="bg-a7cdbd"></i> wait</a></div>
+                        </div>
+                        </div>`
+        }
+        function changeUrl(data) {
+            // const current = window.location.search;
+            // history.pushState(null, null, current + queryString);
+            const filters = document.getElementById("filters").value;
+            if(!filters) {
+                history.pushState(null, null, `?q=${data}`);
+            } else {
+                history.pushState(null, null, `?${filters}&q=${data}`);
+            }
+        } 
+        function getResults() {
+            let url = `/search/?`;
+            if($("#search").length > 0)
+                url += `&q=${document.getElementById("search").value}`;
+            if($("#category").length > 0)
+                url += `&category=${document.getElementById("category").value}`
+            if($("#tag").length > 0)
+                url += `&tag=${document.getElementById("tag").value}`;
+            console.log(url);
+            $.ajax(
+                {
+                    type: 'GET',
+                    url: url,
+                    data:'_token = <?php echo csrf_token() ?>',
+                    success: function(data) {
+                        const details = data;
+                        $("#topics").html(details)
+                        const tagButtons = document.querySelectorAll(".tag-buttons");
+                        const categories = document.querySelectorAll(".categories");
+                        const keyword = document.getElementById("search").value;
+                        changeUrl(keyword);
+                        categories.forEach(category => {
+                            const attr = category.getAttribute("category-data");
+                            category.setAttribute("href", `${attr}q=${keyword}`);
+                        })
+                        tagButtons.forEach(button => {
+                            const attr = button.getAttribute("data-url");
+                            button.setAttribute("href", `${attr}q=${keyword}`);
+                        })
+                    }
+                }
+            )
         }
     </script>
 </body>
