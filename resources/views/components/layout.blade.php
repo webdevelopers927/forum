@@ -33,6 +33,7 @@
     </script>
 </head>
 <body>
+    <i class="fa-regular fa-up"></i>
     <!-- HEADER -->
     <header>
         <div class="header js-header js-dropdown">
@@ -204,17 +205,20 @@
                                 @endauth
                             </div>
                         </div>
-                        <div>
-                            <ul class="dropdown__catalog">
-                                <li><a href="/#">Dashboard</a></li>
-                                <li><a href="/#">Badges</a></li>
-                                <li><a href="/#">My Groups</a></li>
-                                <li><a href="/#">Notifications</a></li>
-                                <li><a href="/#">Topics</a></li>
-                                <li><a href="/#">Likes</a></li>
-                                <li><a href="/#">Solved</a></li>
-                            </ul>
-                        </div>
+                        @auth
+                            <div>
+                                <ul class="dropdown__catalog">
+                                    <li><a href="/questions/{{ auth()->user()->username }}">My Questions</a></li>
+                                    <li><a href="/#">Dashboard</a></li>
+                                    <li><a href="/#">Badges</a></li>
+                                    <li><a href="/#">My Groups</a></li>
+                                    <li><a href="/#">Notifications</a></li>
+                                    <li><a href="/#">Topics</a></li>
+                                    <li><a href="/#">Likes</a></li>
+                                    <li><a href="/#">Solved</a></li>
+                                </ul>
+                            </div>
+                        @endauth
                     </nav>
                 </div>
             </div>
@@ -293,6 +297,9 @@
                 </div>
             </div>
         </div>
+        @auth 
+            <input type="hidden" name="username" id="username" value="{{ auth()->user()->username }}">
+        @endauth
     </footer>
     <!-- JAVA SCRIPT -->
     <script src="/vendor/jquery/jquery.min.js"></script>
@@ -351,8 +358,6 @@
                         </div>`
         }
         function changeUrl(data) {
-            // const current = window.location.search;
-            // history.pushState(null, null, current + queryString);
             const filters = document.getElementById("filters").value;
             if(!filters) {
                 history.pushState(null, null, `?q=${data}`);
@@ -361,6 +366,10 @@
             }
         } 
         function getResults() {
+            let usernameElement = document.getElementById("username");
+            let currentUrl = window.location.href;
+            console.log(currentUrl);
+            let parsedUrl = new URL(currentUrl);
             let url = `/search/?`;
             if($("#search").length > 0)
                 url += `&q=${document.getElementById("search").value}`;
@@ -368,13 +377,16 @@
                 url += `&category=${document.getElementById("category").value}`
             if($("#tag").length > 0)
                 url += `&tag=${document.getElementById("tag").value}`;
-            console.log(url);
+            if(usernameElement && parsedUrl.pathname.includes("/questions/")) {
+                url += `&user=${usernameElement.value}`;
+            }
             $.ajax(
                 {
                     type: 'GET',
                     url: url,
                     data:'_token = <?php echo csrf_token() ?>',
                     success: function(data) {
+                        console.log(url);
                         const details = data;
                         $("#topics").html(details)
                         const tagButtons = document.querySelectorAll(".tag-buttons");
@@ -393,6 +405,8 @@
                 }
             )
         }
+        
     </script>
+    
 </body>
 </html>
