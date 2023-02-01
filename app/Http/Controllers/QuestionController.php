@@ -18,6 +18,7 @@ class QuestionController extends Controller
 	    	$tag_id = Tag::firstWhere("name", $tag);
     	}
     	$questions = Question::with(["category", "tags", "comments"])->filter([request(["category", "q"]), $tag_id])->simplePaginate(10);
+		
     	return view("index", [
     		"questions" => $questions,
     	]);
@@ -39,9 +40,9 @@ class QuestionController extends Controller
 	}
 	public function storeQuestion() {
 		$attributes = request()->validate([
-			"title" => ["required", "min:10", "max:50"],
+			"title" => ["required", "min:10", "max:60"],
 			"category_id" => ["required"],
-			"description" => ["required", "min:30", "max:100"]
+			"description" => ["required", "min:30", "max:1000"]
 		]);
 		$attributes["user_id"] = auth()->user()->id;
 		$attributes["slug"] = Str::slug($attributes["title"]);

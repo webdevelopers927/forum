@@ -8,9 +8,10 @@
                 </div>
                 <form action="/create-question/create" method="POST">
                     @csrf
-                    <div class="create__section">
+                    <div class="create__section" id="title-section">
                         <label class="create__label" for="title">Thread Title</label>
-                        <input type="text" class="form-control" name="title" id="title" placeholder="Add here">
+                        <input type="text" class="form-control" style="border: 1px solid green;" name="title" id="title" placeholder="Add here">
+                        <p class="opacity-50 mt-2"><span id="qty">10</span> More characters</p>
                     </div>
                     <div class="row">
                         <div class="col-md-12">
