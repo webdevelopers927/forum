@@ -405,7 +405,37 @@
                 }
             )
         }
-        
+        const success = (element, enteredChars, max,msgID) => {
+            const remaining = max - enteredChars;
+            const userMessageId = document.getElementById(msgID);
+            userMessageId.textContent = `${remaining} more characters remining`;
+            element.style.border = "1px solid green";
+        }
+        const failed = (element, min, max, msgID) => {
+            const chars = element.value.length;
+            const messageID = document.getElementById(msgID);
+            let required;
+            element.style.border = "1px solid red";
+            if(chars < min) {
+                required = min - chars;
+                messageID.textContent = `${required} more characters to go.....`;
+            }
+            if(chars > max) {
+                required = chars - max;
+                messageID.textContent = `You have Typed extra ${required} character(s)`;
+            }
+        }
+        function characterAuth(min, max, id, messageID) {
+            const element = document.getElementById(id);
+            const message = document.getElementById(messageID);
+            const len = element.value.length;
+            if(len >= min && len <= max) {
+                success(element, len, max, messageID);
+            } else {
+                failed(element, min, max, messageID);
+            }
+            message.style.display = "block";
+        }
     </script>
     
 </body>

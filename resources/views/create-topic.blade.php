@@ -10,8 +10,8 @@
                     @csrf
                     <div class="create__section" id="title-section">
                         <label class="create__label" for="title">Thread Title</label>
-                        <input type="text" class="form-control" style="border: 1px solid green;" name="title" id="title" placeholder="Add here">
-                        <p class="opacity-50 mt-2"><span id="qty">10</span> More characters</p>
+                        <input type="text" onkeyup="characterAuth(10, 60, 'title', 'title-characters')" class="form-control" name="title" id="title" placeholder="Add here">
+                        <p id="title-characters" class="opacity-50 mt-2" style="display: none">10 More characters</p>
                     </div>
                     <div class="row">
                         <div class="col-md-12">
@@ -31,7 +31,9 @@
                     <div class="create__section create__textarea">
                         <label class="create__label" for="category">Description</label>
                             
-                        <textarea name="description" class="form-control" id="description" placeholder="Description..."></textarea>
+                        <textarea name="description" onkeyup="characterAuth(30, 1000, 'description', 'desc-characters')"  class="form-control" id="description" placeholder="Description..."></textarea>
+                        <p id="desc-characters" style="display: none" class="opacity-50 mt-2">10 More characters</p>
+                    
                     </div>
                     <div class="create__section">
                         <input type="hidden" id="tags" name="tags" class="form-control" id="tags" placeholder="e.g. nature, science">
