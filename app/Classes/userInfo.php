@@ -1,6 +1,7 @@
 <?php 
 namespace App\Classes;
 
+use App\Models\Question;
 use App\Models\User;
 
 class UserInfo {

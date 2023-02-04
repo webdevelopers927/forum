@@ -6,6 +6,7 @@ use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 
 /*
@@ -32,7 +33,9 @@ Route::post("/question/{question:id}/comment", [QuestionController::class, "stor
 Route::get("/create-question", [QuestionController::class, "create"]);
 Route::post("/create-question/create", [QuestionController::class, "storeQuestion"]);
 Route::get("/search", [AjaxController::class, "search"]);
+Route::post("/profile/{username}/picture", [AjaxController::class, "update"]);
 Route::get("/questions/{username}", [UserController::class, "show"]);
+Route::get("/profile/{username}", [ProfileController::class, "show"]);
 
 Route::get("/post", function() {
 	return view("single");

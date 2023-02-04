@@ -8,6 +8,10 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use App\Models\Badge;
+use App\Models\Question;
+use App\Models\Comment;
+use App\Models\profile;
 
 class User extends Authenticatable
 {
@@ -43,7 +47,18 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-    
+    public function badges() {
+        return $this->hasMany(Badge::class);
+    }
+    public function profile() {
+        return $this->hasOne(Profile::class);
+    }
+    public function questions() {
+        return $this->hasMany(Question::class);
+    }
+    public function comments() {
+        return $this->hasMany(Comment::class);
+    }
     protected function password(): Attribute {
         return Attribute::make(
             set: fn($value) => bcrypt($value)

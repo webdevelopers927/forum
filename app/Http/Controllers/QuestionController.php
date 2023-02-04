@@ -8,6 +8,9 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\Question;
 use App\Models\Tag;
+use App\Classes\BadgesAwarded;
+use Illuminate\Foundation\Events\Dispatchable;
+use App\Events\NewComment;
 
 class QuestionController extends Controller
 {
@@ -39,6 +42,8 @@ class QuestionController extends Controller
 		]);
 	}
 	public function storeQuestion() {
+		$badge = new BadgesAwarded(Auth()->user()->id);
+		$badge->updateBadges();
 		$attributes = request()->validate([
 			"title" => ["required", "min:10", "max:60"],
 			"category_id" => ["required"],
@@ -68,6 +73,9 @@ class QuestionController extends Controller
 			"hearts" => 0,
 			"status" => 1
 		]);
+		// dispatch(new NewComment(auth()->user(), $question->user));
+		// NewComment::dispatch(auth()->user(), $question->user);
+		event(new NewComment(auth()->user(), $question->user));
 		return redirect()->back();
 	}
 }

@@ -8,6 +8,7 @@
     <meta name="description" content="Responsive HTML5 Template">
     <meta name="author" content="author.com">
     <title>Responsive HTML5 Template</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- STYLESHEET -->
     <!-- fonts -->
@@ -152,37 +153,28 @@
                     <div class="dropdown dropdown--design-01" data-dropdown-list="notification">
                         <div>
                             <a href="/#">
-                                <i class="icon-Favorite_Topic"></i>
-                                <p>Roswell . 16 feb, 17<span>Which movie have you watched recently?</span></p>
+                                <p>16 feb, 17<span>Someone commented in one of your questions</span></p>
                             </a>
+                            
                             <a href="/#">
-                                <i class="icon-Reply_Empty"></i>
-                                <p>Callis . 18 feb, 17<span>I got an amzon thingie!</span></p>
+                                <p>16 feb, 17<span>Someone commented in one of your questions</span></p>
                             </a>
+                            
                             <a href="/#">
-                                <i class="icon-Badge"></i>
-                                <p>Earned Badge . 19 feb, 17<span><img src="/fonts/icons/badges/Lets_talk.svg" alt="Lets Talk">Lets Talk</span></p>
+                                <p>16 feb, 17<span>Someone commented in one of your questions</span></p>
                             </a>
-                            <a href="/#">
-                                <i class="icon-Badge"></i>
-                                <p>Earned Badge . 21 feb, 17<span><img src="/fonts/icons/badges/Intermediate.svg" alt="Intermediate">Intermediate</span></p>
-                            </a>
-                            <a href="/#">
-                                <i class="icon-Share_Topic"></i>
-                                <p>Charlie . 22 feb, 17<span>Need Video file of that cat.</span></p>
-                            </a>
-                            <a href="/#">
-                                <i class="icon-Pencil"></i>
-                                <p>Greentea . 22 feb, 17<span>New Facebook like and share button.</span></p>
-                            </a>
-                            <span><a href="/#">view older notifications...</a></span>
+                            
+                            {{-- <span><a href="/#">view older notifications...</a></span> --}}
                         </div>
                     </div>
                 </div>
                 <div class="header__user">
                     @auth
                     <div class="mr-3">
-                        <x-user :letter="auth()->user()->username[0] ?? 'A'"/>
+                        <x-details 
+                            :user="auth()->user()->id" 
+                            :letter="auth()->user()->username[0] ?? 'A'"
+                        />
                     </div>
                         <div class="header__user-btn" data-dropdown-btn="user">
                             {{ auth()->user()->username }}<i class="icon-Arrow_Below"></i>

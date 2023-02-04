@@ -16,9 +16,12 @@
                         </div>
                         <div class="posts__section-right">
                             <div class="posts__users">
-                                @forelse ($question->comments as $comment)
+                                 @forelse ($question->comments as $comment)
                                     @if($loop->iteration > 3) @break @endif
-                                    <x-user :letter="$comment->user->name[0] ?? 'A'"/>
+                                    <x-details 
+                                        :user="$comment->user_id" 
+                                        :letter="$comment->user->name[0] ?? 'A'"
+                                    />
                                 @empty
                                     <p>No Comments</p>
                                 @endforelse

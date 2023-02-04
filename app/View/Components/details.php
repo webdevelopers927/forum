@@ -3,19 +3,20 @@
 namespace App\View\Components;
 
 use Illuminate\View\Component;
-use App\Models\Category;
-use App\Models\Tag;
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
-class navbar extends Component
+class details extends Component
 {
     /**
      * Create a new component instance.
      *
      * @return void
      */
-
-    public function __construct()
+    public $user;
+    public function __construct($user = 1)
     {
+        $this->user = $user;
     }
 
     /**
@@ -25,11 +26,8 @@ class navbar extends Component
      */
     public function render()
     {
-        $categories = Category::with("questions")->get();
-        $tags = Tag::with("questions")->get();
-        return view('components.navbar', [
-            "categories" => $categories,
-            "tags" => $tags
-        ]);
+        $id = $this->user;
+        $profile = DB::table("profile")->where("user_id", $this->user)->first();
+        return view('components.details', compact("profile"));
     }
 }

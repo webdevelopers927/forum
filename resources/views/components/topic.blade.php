@@ -2,7 +2,7 @@
 <div {{ $attributes->merge(["class" => "topic"]) }}>
                             <div class="topic__head">
                                 <div class="topic__avatar">
-                                    <x-user :letter="ucwords($content->user->name[0] ?? 'a')"/>                                    
+                                    <x-details :user="$content->user->id" :letter="ucwords($content->user->name[0] ?? 'a')"/>                                    
                                 </div>
                                 <div class="topic__caption">
                                     <div class="topic__name">

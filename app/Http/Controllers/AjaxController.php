@@ -7,6 +7,8 @@ use App\Classes\UserInfo;
 use Illuminate\Http\Request;
 use App\Models\Question;
 use App\Models\Tag;
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class AjaxController extends Controller
 {
@@ -29,14 +31,15 @@ class AjaxController extends Controller
                 }
             })
             ->simplePaginate(10);
-
-
-        // if($id) 
-        //     $questions->where("user_id", $id);
-
-        // $questions->simplePaginate(10);
-
-        
         return MarkupGenerator::Generate($questions);
+    }
+    public function update($username) {
+        $user = User::firstWhere("username", $username);
+        $file = request()->file("upload_pic");
+        $destinationPath = "uploads";
+        $file->move($destinationPath, $file->getClientOriginalName());
+        DB::table("profile")->where("user_id", $user->id)->update([
+            "profile_pic" => $file->getClientOriginalName()
+        ]);
     }
 }
