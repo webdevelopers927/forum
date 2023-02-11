@@ -1,3 +1,3 @@
 
 @props(["href" => "#"])
-<a href="{{ $href }}" {{ $attributes->merge(["class" => ""]) }}>{{ $slot }}</a>
+<a href="?{{ http_build_query(request()->except('tag')) }}&tag={{ $slot }}" {{ $attributes->merge(["class" => ""]) }}>{{ $slot }}</a>

@@ -1,4 +1,4 @@
-<x-layout>
+<x-layouts>
     <main>
         <div class="container">
             <div class="create">
@@ -56,4 +56,4 @@
             @endif
         </div>
     </main>
-</x-layout>
+</x-layouts>

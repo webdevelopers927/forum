@@ -2,7 +2,6 @@
 
 namespace App\Events;
 
-use App\Models\Question;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -12,7 +11,7 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use App\Models\User;
 
-class NewComment
+class BadgeAward
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -21,14 +20,12 @@ class NewComment
      *
      * @return void
      */
-    public $sender;
-    public $reciever;
-    public $question;
-    public function __construct(User $sender, User $reciever, Question $question)
+    public User $user;
+    public $user_id;
+    public function __construct(User $user, $user_id)
     {
-        $this->sender = $sender;
-        $this->reciever = $reciever;
-        $this->question = $question;
+        $this->user = $user;
+        $this->user_id = $user_id;
     }
 
     /**

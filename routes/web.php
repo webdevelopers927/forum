@@ -36,6 +36,10 @@ Route::get("/search", [AjaxController::class, "search"]);
 Route::post("/profile/{username}/picture", [AjaxController::class, "update"]);
 Route::get("/questions/{username}", [UserController::class, "show"]);
 Route::get("/profile/{username}", [ProfileController::class, "show"]);
+Route::post("/notification/{id}/update", [AjaxController::class, "readNotifications"]);
+Route::get("/notifications/{username}/old", [AjaxController::class, "oldNotifications"]);
+Route::get("profile/{username}/edit", [ProfileController::class, "edit"]);
+Route::post("profile/{username}/update", [ProfileController::class, "update"]);
 
 Route::get("/post", function() {
 	return view("single");

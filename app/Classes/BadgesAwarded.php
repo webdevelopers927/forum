@@ -1,6 +1,8 @@
 <?php 
 
 namespace App\Classes;
+use App\Listeners\AwardNotify;
+use App\Events\BadgeAward;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
@@ -51,6 +53,7 @@ class BadgesAwarded {
             "user_id" => $this->id,
             "badge_id" => $id
         ]);
+        event(new BadgeAward($this->user, $id));
     }
     public function updateBadges() {
         // newbie badge

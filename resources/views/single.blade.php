@@ -1,4 +1,4 @@
-<x-layout>
+<x-layouts>
 		<x-navbar />
             <div class="topics">
                 <div class="topics__heading">
@@ -45,4 +45,4 @@
                 </div>
             </div>
         <x-posts-table :questions="$questions"/>    
-</x-layout>
+</x-layouts>

@@ -1,22 +1,23 @@
-<x-layout>
+<x-layouts>
     <div class="user-header rounded-md px-4 flex">
         <header class="text-center w-56">
             @php
                 $id = 2;
             @endphp
             <x-details 
+                isDP="true"
                 :user="$user->id"
                 class="w-96 mt-10 py-4" 
                 letter="{{ $user->username[0] }}" 
                 editable="{{ Auth::user() && Auth::user()->username == $user->username }}"
-                profile_pic="{{ $user->profile->profile_pic }}"
+                profile_pic="{{ $user?->profile?->profile_pic }}"
             />
             <h1 class="text-4xl font-bold mt-3">{{ $user->username }}</h1>
-            <p class="text-slate-600 mt-2">{{ $user->created_at->diffForHumans() }}</p>
+            <p class="text-slate-600 mt-2">{{ $user?->created_at?->diffForHumans() }}</p>
         </header>
         <article class="ml-10" style="margin-top: 60px;">
             <p>
-                @if($user->profile->description)
+                @if($user?->profile?->description)
                     <p>{{ $user->profile?->description }}</p>
                 @else 
                     <p>No description posted by the user yet...</p>
@@ -24,7 +25,7 @@
             </p>
         </article>
     </div>
-    @if(!$user->profile->is_private)
+    @if(!$user->profile?->is_private)
     <hr class="mt-10" style="background: rgba(0, 0, 0, 0.4); height: 1px;" />
     <div class="user-detail flex justify-around mt-10">
         <div class="questions">
@@ -134,4 +135,4 @@
     @else 
         <div class="alert alert-danger mt-10">This profile is private</div>
     @endif
-</x-layout>
+</x-layouts>

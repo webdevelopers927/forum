@@ -12,13 +12,14 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="posts__category"><a href="/category/{{ $question->category->slug }}" class="category"><i class="bg-a7cdbd"></i> {{ $question->category->name }}</a></div>
+                            <div class="posts__category"><a href="?{{ http_build_query(request()->except("category")) }}&category={{ $question->category->slug }}" class="category"><i class="bg-a7cdbd"></i> {{ $question->category->name }}</a></div>
                         </div>
                         <div class="posts__section-right">
                             <div class="posts__users">
                                  @forelse ($question->comments as $comment)
                                     @if($loop->iteration > 3) @break @endif
                                     <x-details 
+                                        href="/profile/{{ $comment->user->username }}"
                                         :user="$comment->user_id" 
                                         :letter="$comment->user->name[0] ?? 'A'"
                                     />

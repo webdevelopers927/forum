@@ -145,26 +145,23 @@
                 </div>
                 <div class="header__notification">
                     @auth 
-                        <div class="header__notification-btn" data-dropdown-btn="notification">
+                        <div class="header__notification-btn" onclick="messagesRead({{ auth()->user()->id }})" data-dropdown-btn="notification">
                             <i class="icon-Notification"></i>
-                            <span>6</span>
+                            <span>{{ count($unReadNotifications) }}</span>
                         </div>
                     @endauth
                     <div class="dropdown dropdown--design-01" data-dropdown-list="notification">
-                        <div>
-                            <a href="/#">
-                                <p>16 feb, 17<span>Someone commented in one of your questions</span></p>
-                            </a>
-                            
-                            <a href="/#">
-                                <p>16 feb, 17<span>Someone commented in one of your questions</span></p>
-                            </a>
-                            
-                            <a href="/#">
-                                <p>16 feb, 17<span>Someone commented in one of your questions</span></p>
-                            </a>
-                            
-                            {{-- <span><a href="/#">view older notifications...</a></span> --}}
+                        <div class="{{ (count($unReadNotifications)) ? "overflow-scroll h-96" : "" }}" >
+                            @if(count($unReadNotifications)) 
+                                @foreach($unReadNotifications as $notifications)
+                                    <a href="/#">
+                                        <p>{{ date('d-M-Y', strtotime($notifications->created_at)) }}</p>
+                                            <p>{!! $notifications->message !!}</p>
+                                    </a>
+                                @endforeach
+                            @else 
+                                <span><a href="/#">view older notifications...</a></span>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -201,7 +198,8 @@
                             <div>
                                 <ul class="dropdown__catalog">
                                     <li><a href="/questions/{{ auth()->user()->username }}">My Questions</a></li>
-                                    <li><a href="/#">Dashboard</a></li>
+                                    <li><a href="/profile/{{ auth()->user()->username }}">Profile</a></li>
+                                    <li><a href="/#">Edit Profile</a></li>
                                     <li><a href="/#">Badges</a></li>
                                     <li><a href="/#">My Groups</a></li>
                                     <li><a href="/#">Notifications</a></li>
@@ -332,7 +330,6 @@
                                         
         }
         const getMarkup = detail => {
-            
             return `<div class="posts__item bg-f2f4f6">                     
                     <div class="posts__section-left">
                             <div class="posts__topic">
@@ -360,7 +357,6 @@
         function getResults() {
             let usernameElement = document.getElementById("username");
             let currentUrl = window.location.href;
-            console.log(currentUrl);
             let parsedUrl = new URL(currentUrl);
             let url = `/search/?`;
             if($("#search").length > 0)
@@ -378,7 +374,6 @@
                     url: url,
                     data:'_token = <?php echo csrf_token() ?>',
                     success: function(data) {
-                        console.log(url);
                         const details = data;
                         $("#topics").html(details)
                         const tagButtons = document.querySelectorAll(".tag-buttons");
@@ -427,6 +422,23 @@
                 failed(element, min, max, messageID);
             }
             message.style.display = "block";
+        }
+        const messagesRead = (id) => {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax(
+                {
+                    method: 'POST',
+                    url: "/notification/{{ (auth()->user()) ? auth()->user()->id : null}}/update",
+                    // contentType: "multipart/form-data; charset=utf-8; boundary=" + Math.random().toString().substr(2),
+                    success: function(data) {
+                        console.log(data);
+                    }
+                }
+            )
         }
     </script>
     

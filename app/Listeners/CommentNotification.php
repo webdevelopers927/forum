@@ -29,8 +29,13 @@ class CommentNotification
     {
         $senderName = $event->sender->name;
         $recieverID = $event->reciever->id;
+        $senderID = $event->sender->id;
+        if($recieverID == $senderID) {
+            return;
+        }
         // dd($recieverID);
-        $message = "$senderName just commented on one of your question";
+        $title = $event->question->title;
+        $message = "$senderName just commented on <strong>$title</strong>";
         DB::table("notifications")->insert([
             "user_id" => $recieverID,
             "isRead" => false,

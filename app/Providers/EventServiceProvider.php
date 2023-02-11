@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Events\BadgeAward;
 use App\Listeners\CommentNotification;
 use App\Events\NewComment;
+use App\Listeners\AwardNotify;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -23,6 +25,9 @@ class EventServiceProvider extends ServiceProvider
         NewComment::class => [
             [CommentNotification::class, "handle"],
         ],
+        BadgeAward::class => [
+            [AwardNotify::class, "handle"],
+        ]
     ];
 
     /**

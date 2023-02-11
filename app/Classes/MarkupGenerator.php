@@ -40,8 +40,9 @@ class MarkupGenerator {
     }
     private static function tags($tags) {
         $tagsMarkup = "";
+        $remaining = http_build_query(request()->except("tag", "_token_"));
         foreach($tags as $tag) {
-            $tagsMarkup .= "<a href='?tag/$tag->name' class='bg-a3d39c'>$tag->name</a>";
+            $tagsMarkup .= "<a href='?&$remaining&tag=$tag->name' class='bg-a3d39c'>$tag->name</a>";
         }
         return $tagsMarkup;
     }
@@ -51,6 +52,7 @@ class MarkupGenerator {
         $tags = MarkupGenerator::tags($question->tags);
         $users = MarkupGenerator::users($question->comments);
         $counts = count($question->comments);
+        $remaining = http_build_query(request()->except("category", "_token_"));
         $template = "<div class='posts__item bg-f2f4f6'>
         <div class='posts__section-left'>
             <div class='posts__topic'>
@@ -63,7 +65,7 @@ class MarkupGenerator {
                     </div>
                 </div>
             </div>
-            <div class='posts__category'><a href='/?category=$slug' class='category'><i class='bg-a7cdbd'></i>$category</a></div>
+            <div class='posts__category'><a href='/?$remaining&category=$slug' class='category'><i class='bg-a7cdbd'></i>$category</a></div>
         </div>
         <div class='posts__section-right'>
             <div class='posts__users'>

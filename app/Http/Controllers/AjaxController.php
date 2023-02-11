@@ -12,6 +12,27 @@ use Illuminate\Support\Facades\DB;
 
 class AjaxController extends Controller
 {
+    public function oldNotifications($username) {
+        if(!(auth()->user()->username == $username)) {
+            abort(404);
+        }
+        $user = User::firstWhere("username", $username);
+        $notifications = DB::table("notifications")
+            ->where("user_id", $user->id)
+            ->where("isRead", 1)
+            ->orderBy("created_at", "desc")
+            ->take(10)
+            ->get();
+        return view("notifications", compact("notifications", "username"));
+    }
+    public function readNotifications($id) {
+        $notifications = DB::table("notifications")
+            ->where("user_id", $id)
+            ->update([
+                "isRead" => 1
+            ]);
+        return $id;
+    }
     public function search() {
         $url = url()->current();
         $username = request()->get("user");

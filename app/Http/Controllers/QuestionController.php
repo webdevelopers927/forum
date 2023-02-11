@@ -53,7 +53,8 @@ class QuestionController extends Controller
 		$attributes["slug"] = Str::slug($attributes["title"]);
 		$question = Question::create($attributes);
 		$question->tags()->attach(explode(",", request()->input("tags")));
-		return redirect()->back();
+		$slug = $attributes['slug'];
+		return redirect()->to("/question/$slug");
 	}
 	public function show(Question $question) {
 		return view("single", [
@@ -75,7 +76,8 @@ class QuestionController extends Controller
 		]);
 		// dispatch(new NewComment(auth()->user(), $question->user));
 		// NewComment::dispatch(auth()->user(), $question->user);
-		event(new NewComment(auth()->user(), $question->user));
+		// new NewComment()
+		event(new NewComment(auth()->user(), $question->user, $question));
 		return redirect()->back();
 	}
 }
